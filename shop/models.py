@@ -6,7 +6,7 @@ class user_info(models.Model):
 	name = models.CharField(max_length=50)
 	passwd = models.CharField(max_length=50)
 	email = models.CharField(max_length=50)
-	phone_number = models.CharField(max_length=11)
+	phone_number = models.CharField(max_length=11,null=True,blank=True)
 	registe_date = models.DateTimeField()
 
 	class Meta():
@@ -29,6 +29,7 @@ class goods_info(models.Model):
 	img_url = models.CharField(max_length=200)
 	intro = models.TextField()
 	desc = models.TextField()
+	unit = models.CharField(max_length=20,default='500g')
 
 	class Meta():
 		db_table = 'goods_info'
@@ -79,5 +80,5 @@ class cart(models.Model):
 	goods_id = models.ForeignKey('goods_info')
 	buy_count = models.IntegerField()
 
-	class Meta:
+	class Meta():
 		db_table = 'cart'
