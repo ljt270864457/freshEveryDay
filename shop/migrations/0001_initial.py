@@ -16,6 +16,9 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('buy_count', models.IntegerField()),
             ],
+            options={
+                'db_table': 'cart',
+            },
         ),
         migrations.CreateModel(
             name='deli_address',
@@ -26,6 +29,9 @@ class Migration(migrations.Migration):
                 ('postcode', models.CharField(max_length=6)),
                 ('phone_number', models.CharField(max_length=11)),
             ],
+            options={
+                'db_table': 'deli_address',
+            },
         ),
         migrations.CreateModel(
             name='goods_cate',
@@ -34,6 +40,9 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100)),
                 ('img_url', models.TextField()),
             ],
+            options={
+                'db_table': 'goods_cate',
+            },
         ),
         migrations.CreateModel(
             name='goods_info',
@@ -45,19 +54,25 @@ class Migration(migrations.Migration):
                 ('img_url', models.CharField(max_length=200)),
                 ('intro', models.TextField()),
                 ('desc', models.TextField()),
+                ('unit', models.CharField(max_length=20)),
                 ('cate_id', models.ForeignKey(to='shop.goods_cate')),
             ],
+            options={
+                'db_table': 'goods_info',
+            },
         ),
         migrations.CreateModel(
             name='order',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('order_id', models.CharField(max_length=20)),
                 ('order_time', models.DateTimeField()),
                 ('is_pay', models.BooleanField()),
                 ('total_price', models.DecimalField(max_digits=10, decimal_places=2)),
                 ('deli_id', models.ForeignKey(to='shop.deli_address')),
             ],
+            options={
+                'db_table': 'order',
+            },
         ),
         migrations.CreateModel(
             name='order_record',
@@ -67,6 +82,9 @@ class Migration(migrations.Migration):
                 ('goods_id', models.ForeignKey(to='shop.goods_info')),
                 ('order_id', models.ForeignKey(to='shop.order')),
             ],
+            options={
+                'db_table': 'order_record',
+            },
         ),
         migrations.CreateModel(
             name='recent_views',
@@ -75,6 +93,9 @@ class Migration(migrations.Migration):
                 ('view_time', models.DateTimeField()),
                 ('goods_id', models.ForeignKey(to='shop.goods_info')),
             ],
+            options={
+                'db_table': 'recent_views',
+            },
         ),
         migrations.CreateModel(
             name='user_info',
@@ -83,9 +104,13 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=50)),
                 ('passwd', models.CharField(max_length=50)),
                 ('email', models.CharField(max_length=50)),
-                ('phone_number', models.CharField(max_length=11)),
-                ('registe_date', models.DateTimeField()),
+                ('phone_number', models.CharField(max_length=11, null=True, blank=True)),
+                ('registe_date', models.DateTimeField(auto_now=True)),
+                ('address', models.CharField(max_length=100)),
             ],
+            options={
+                'db_table': 'user_info',
+            },
         ),
         migrations.AddField(
             model_name='recent_views',

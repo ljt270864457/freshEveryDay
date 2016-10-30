@@ -7,7 +7,8 @@ class user_info(models.Model):
 	passwd = models.CharField(max_length=50)
 	email = models.CharField(max_length=50)
 	phone_number = models.CharField(max_length=11,null=True,blank=True)
-	registe_date = models.DateTimeField()
+	registe_date = models.DateTimeField(auto_now=True)
+	address = models.CharField(max_length=100)
 
 	class Meta():
 		db_table = 'user_info'
@@ -29,7 +30,7 @@ class goods_info(models.Model):
 	img_url = models.CharField(max_length=200)
 	intro = models.TextField()
 	desc = models.TextField()
-	unit = models.CharField(max_length=20,default='500g')
+	unit = models.CharField(max_length=20)
 
 	class Meta():
 		db_table = 'goods_info'
@@ -38,7 +39,7 @@ class goods_info(models.Model):
 class recent_views(models.Model):
 	goods_id = models.ForeignKey('goods_info')
 	user_id = models.ForeignKey('user_info')
-	view_time = models.DateTimeField()
+	view_time = models.DateTimeField(auto_now=True)
 
 	class Meta():
 		db_table = 'recent_views'
@@ -46,7 +47,7 @@ class recent_views(models.Model):
 # 订单基本信息表
 class order(models.Model):
 	user_id = models.ForeignKey('user_info')
-	order_time = models.DateTimeField()
+	order_time = models.DateTimeField(auto_now=True)
 	is_pay = models.BooleanField()
 	deli_id = models.ForeignKey('deli_address')
 	total_price = models.DecimalField(max_digits=10,decimal_places=2)

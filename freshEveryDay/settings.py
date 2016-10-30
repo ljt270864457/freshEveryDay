@@ -1,3 +1,4 @@
+# -*- coding=utf-8 -*- 
 """
 Django settings for freshEveryDay project.
 
@@ -38,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shop',
+    'django_admin_bootstrapped',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -98,7 +100,8 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+# 解决时间同步的问题
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
