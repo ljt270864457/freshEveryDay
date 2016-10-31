@@ -7,8 +7,5 @@ class cart(models.Model):
 	goods_id = models.ForeignKey('goods_info.goods_info')
 	buy_count = models.IntegerField()
 
-	def __unicode__(self):
-		return self.pk
-
 	class Meta():
 		db_table = 'cart'

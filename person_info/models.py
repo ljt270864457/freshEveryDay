@@ -7,9 +7,6 @@ class recent_views(models.Model):
 	user_id = models.ForeignKey('login.user_info')
 	view_time = models.DateTimeField(auto_now=True)
 
-	def __unicode__(self):
-		return self.pk
-
 	class Meta():
 		db_table = 'recent_views'
 
@@ -21,8 +18,6 @@ class order(models.Model):
 	deli_id = models.ForeignKey('deli_address')
 	total_price = models.DecimalField(max_digits=10,decimal_places=2)
 
-	def __unicode__(self):
-		return self.pk
 
 	class Meta():
 		db_table = 'order'
@@ -33,9 +28,6 @@ class order_record(models.Model):
 	goods_id = models.ForeignKey('goods_info.goods_info')
 	goods_count = models.IntegerField()
 	
-	def __unicode__(self):
-		return self.pk
-
 	class Meta():
 		db_table = 'order_record'
 
@@ -47,8 +39,6 @@ class deli_address(models.Model):
 	postcode = models.CharField(max_length=6)
 	phone_number = models.CharField(max_length=11)
 
-	def __unicode__(self):
-		return self.pk
 
 	class Meta():
 		db_table = 'deli_address' 
