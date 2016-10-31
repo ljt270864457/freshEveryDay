@@ -38,8 +38,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'shop',
-    'django_admin_bootstrapped',
+    'goods_info',
+    'login',
+    'pay',
+    'person_info',
+    'tinymce',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,6 +111,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
 ]
