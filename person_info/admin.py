@@ -26,7 +26,7 @@ class recent_views_inline(admin.StackedInline):
 
 
 class order_inline(admin.StackedInline):
-	model = order
+	model = orders
 	extra = 1
 
 
@@ -67,7 +67,7 @@ class goods_info_admin(admin.ModelAdmin):
 class recent_views_admin(admin.ModelAdmin):
 	list_display=['pk','goods_id','user_id','view_time']
 
-@admin.register(order)
+@admin.register(orders)
 class order_admin(admin.ModelAdmin):
 	inlines = [order_record_inline]
 	list_display=['pk','user_id','order_time','is_pay','deli_id','total_price']

@@ -24,6 +24,8 @@ class goods_info(models.Model):
 	desc = HTMLField()
 	unit = models.CharField(max_length=20)
 	sales_num = models.IntegerField(default=0)
+	putaway_date = models.DateTimeField(auto_now=True)
+
 
 	def __unicode__(self):
 		return self.name

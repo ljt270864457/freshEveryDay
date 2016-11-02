@@ -125,7 +125,7 @@ html,body{height:100%}
 .list_title .subtitle span{color:#666;margin:0 10px 0 20px;}
 .list_title .subtitle a{color:#666;margin:0 5px;}
 .list_title .subtitle a:hover,.goods_more:hover{color:#ff8800}
-.goods_more{height:20px;margin-top:15px;color:#666}
+.goods_more{height:20px;margin-top:15px;color:#666} 
 
 .goods_con{height:300px;}
 .goods_banner{width:200px;height:300px;}
