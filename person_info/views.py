@@ -3,11 +3,12 @@
 from django.core.urlresolvers import reverse   
 from django.http import JsonResponse,HttpResponse
 from django.shortcuts import render,redirect
+from django.core.paginator import Paginator
 from login.models import user_info
-from goods_info.models import goods_info
+from goods_info.models import *
 from models import *
 from pay.models import cart
-from toolKit import formatPhoneNumber
+from toolKit import *
 
 # 用户中心-个人信息视图函数
 def userInfo(request):
@@ -23,9 +24,9 @@ def userInfo(request):
 	for goods in recent_list:
 		goods_id = goods.goods_id_id		
 		goodsList.append(goods_id)
- 	for i in goodsList:
- 		goods = goods_info.objects.get(id=i)
- 		name = goods.name
+	for i in goodsList:
+		goods = goods_info.objects.get(id=i)
+		name = goods.name
 		img_url = goods.img_url
 		price = goods.price
 		unit = goods.unit
@@ -35,89 +36,62 @@ def userInfo(request):
 # 用户中心-个人信息视图函数
 # 需要查询的数据：
 # 下单时间、订单号、支付状态、商品名称、商品价格、单位、图片url、购买数量
-def userOrder(request):
-	orderList = orders.objects.filter(user_id_id=1).order_by('-order_time')[:2]	
-	orderCount = orders.objects.filter(user_id_id=1).count() # 3
-
+def userOrder(request,pageIndex):
+	orderList = orders.objects.filter(user_id_id=1).order_by('-order_time')
+	allInfo = []
+	tempList = []
 	# 某用户的订单号的集合
-	orderIDList = [] # 4,3
+	orderIDList = [] # [8L, 7L, 6L, 5L, 1L, 4L, 3L]
+	orderPriceList=[]
 	for i in orderList:
 		orderIDList.append(i.pk)
 
-	# 某用户每个订单的信息
-	orderInfo = []
-
-	# 订单中的商品信息
-	goodsInfoList = [] # [{'goodsURL': <ImageFieldFile: upload/goods006.jpg>, 'goodsName': u'\u8fdb\u53e3\u897f\u6885', 'goodsPrice': Decimal('28.80'), 'goodsUnit': u'500g'}, {'goodsURL': <ImageFieldFile: upload/goods005.jpg>, 'goodsName': u'\u9ec4\u8089\u6843', 'goodsPrice': Decimal('10.00'), 'goodsUnit': u'500g'}]
-
-	# 获取订单号及相应的信息
-	# [{'isPay': False,'orderID': 4L,'orderTime': datetime.datetime(2016, 11, 1, 23, 5, 51, 141597)},
-
-	 # {'isPay': True,'orderID': 3L,'orderTime': datetime.datetime(2016, 11, 1, 23, 5, 26, 375013)}]
 	for orderID in orderIDList:
+		goodsInfoList = []
 		order = orders.objects.get(pk=orderID)
 		isPay = order.is_pay
-		orderTime = order.order_time
-		orderItem = {'orderID':orderID,'isPay':isPay,'orderTime':orderTime}
-		orderInfo.append(orderItem)
-
-
-	# 获取商品信息
-	'''
-		 {'goodsCount': 5L,
-	  'goodsName': u'\u5410\u9c81\u756a\u68a8\u5149\u674f',
-	  'goodsPrice': Decimal('5.50'),
-	  'goodsURL': <ImageFieldFile: upload/goods004.jpg>,
-	  'goodsUnit': u'500g',
-	  'orderID': 4L},
-	 {'goodsCount': 2L,
-	  'goodsName': u'\u9999\u68a8',
-	  'goodsPrice': Decimal('6.45'),
-	  'goodsURL': <ImageFieldFile: upload/goods007.jpg>,
-	  'goodsUnit': u'500g',
-	  'orderID': 4L},
-	 {'goodsCount': 1L,
-	  'goodsName': u'\u6817\u5b50',
-	  'goodsPrice': Decimal('9.50'),
-	  'goodsURL': <ImageFieldFile: upload/goods008.jpg>,
-	  'goodsUnit': u'500g',
-	  'orderID': 4L},
-	 {'goodsCount': 3L,
-	  'goodsName': u'\u5927\u5174\u5927\u68da\u8349\u8393',
-	  'goodsPrice': Decimal('16.80'),
-	  'goodsURL': <ImageFieldFile: upload/goods003.jpg>,
-	  'goodsUnit': u'500g',
-	  'orderID': 3L},
-	 {'goodsCount': 2L,
-	  'goodsName': u'\u9ec4\u8089\u6843',
-	  'goodsPrice': Decimal('10.00'),
-	  'goodsURL': <ImageFieldFile: upload/goods005.jpg>,
-	  'goodsUnit': u'500g',
-	  'orderID': 3L},
-	 {'goodsCount': 2L,
-	  'goodsName': u'\u8fdb\u53e3\u897f\u6885',
-	  'goodsPrice': Decimal('28.80'),
-	  'goodsURL': <ImageFieldFile: upload/goods006.jpg>,
-	  'goodsUnit': u'500g',
-	  'orderID': 3L}]
-
-
-	   '''
-
-	for orderID in orderIDList:
+		orderTime = formateTime(order.order_time)
+		sumPrice = 0
 		# 获取一个订单中的所有商品id
 		goodsID = order_record.objects.filter(order_id_id=orderID)
 		for num in goodsID:
-			goodsInfo = goods_info.objects.get(pk=num.pk)	
+			goodsInfo = goods_info.objects.get(pk=num.goods_id_id)
 			goodsName = goodsInfo.name
 			goodsPrice = goodsInfo.price
 			goodsUnit = goodsInfo.unit
-			goodsURL = goodsInfo.img_url
+			goodsUrl = str(goodsInfo.img_url)
 			goodsCount = order_record.objects.filter(order_id_id=orderID).filter(goods_id_id=num.goods_id_id)
-			goodsItem = {'orderID':orderID,'goodsName':goodsName,'goodsPrice':goodsPrice,'goodsUnit':goodsUnit,'goodsURL':goodsURL,'goodsCount':goodsCount[0].goods_count}
+			goodsPriceSum = goodsPrice * goodsCount[0].goods_count
+			sumPrice += goodsPriceSum			
+			goodsItem = {'orderID':orderID,'goodsName':goodsName,'goodsPrice':goodsPrice,'goodsUnit':goodsUnit,'goodsUrl':goodsUrl,'goodsCount':goodsCount[0].goods_count,'goodsPriceSum':goodsPriceSum}
 			goodsInfoList.append(goodsItem)
+			orderPrice = (orderID,sumPrice)
+		info = {'orderID':orderID,'orderTime':orderTime,'isPay':isPay,'orderGoodsInfo':goodsInfoList,'sumPrice':sumPrice}
 
-	return render(request,'person_info/user_center_order.html',{'orderInfo':orderInfo,'goodsInfoList':goodsInfoList})
+		allInfo.append(info)
+		tempList = allInfo
+
+
+		# 更新数据库中的订单总价
+		orderPriceList.append((orderPrice))
+		for i in orderPriceList:
+			orderID = i[0]
+			price = i[1]
+			table = orders.objects.get(pk=orderID)
+			if table.total_price == 0:
+				table.total_price = price
+				table.save()
+
+	# 分页
+	p = Paginator(tempList,3)
+	pIndex = int(pageIndex)
+	if pIndex == 0:
+		pIndex = 1
+	list2 = p.page(pIndex)
+	prange = p.page_range		
+	# return render(request,'person_info/user_center_order.html',{'allInfo':allInfo})
+	return render(request,'person_info/user_center_order.html',{'allInfo':list2,'prange':prange,'pIndex':pIndex})
+	# return HttpResponse(orderList)
 
 
 # 用户中心-收货地址视图函数

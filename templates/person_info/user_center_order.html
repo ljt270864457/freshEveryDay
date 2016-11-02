@@ -5,6 +5,8 @@
 	<title>天天生鲜-用户中心</title>
 	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
 	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="/static/js/user_center_info/userOrder.js"></script>
 </head>
 <body>
 	<div class="header_con">
@@ -51,72 +53,61 @@
 		</div>
 		<div class="right_content clearfix">
 				<h3 class="common_title2">全部订单</h3>
+				{%for order in allInfo%}
 				<ul class="order_list_th w978 clearfix">
-					<li class="col01">2016-8-21 17:36:24</li>
-					<li class="col02">订单号：56872934</li>
-					<li class="col02 stress">未支付</li>		
-				</ul>
-
+					<li class="col01">{{order.orderTime}}</li>
+					<li class="col02">订单号：{{order.orderID}}</li>
+					<li class="col02 stress">
+						{%if order.isPay%}
+						{{'已支付'}}
+						{%else%}
+						{{'未支付'}} 
+						{%endif%}
+					</li>		
+				</ul>				
 				<table class="order_list_table w980">
 					<tbody>
 						<tr>
 							<td width="55%">
+								{%for goods in order.orderGoodsInfo%}
 								<ul class="order_goods_list clearfix">					
-									<li class="col01"><img src="/static/images/goods02.jpg"></li>
-									<li class="col02">嘎啦苹果嘎啦苹果<em>11.80元/500g</em></li>	
-									<li class="col03">1</li>
-									<li class="col04">11.80元</li>	
+									<li class="col01"><img src="/static/{{goods.goodsUrl}}"></li>
+									<li class="col02">{{goods.goodsName}}<em><span id="price">{{goods.goodsPrice}}</span>元/{{goods.goodsUnit}}</em></li>	
+									<li class="col03" id="count">{{goods.goodsCount}}</li>
+									<li class="col04" id="sum">{{goods.goodsPriceSum}}元</li>	 
 								</ul>
-								<ul class="order_goods_list clearfix">					
-									<li class="col01"><img src="/static/images/goods02.jpg"></li>
-									<li class="col02">嘎啦苹果嘎啦苹果<em>11.80元/500g</em></li>	
-									<li class="col03">1</li>
-									<li class="col04">11.80元</li>	
-								</ul>
+								{%endfor%}
 							</td>
-							<td width="15%">33.60元</td>
-							<td width="15%">待付款</td>
-							<td width="15%"><a href="#" class="oper_btn">去付款</a></td>
-						</tr>
+							<td width="15%">{{order.sumPrice}}元</td>
+							<td width="15%">
+							{%if order.isPay%}
+							{{'已付款'}}
+							{%else%}
+							{{'待付款'}}
+							{%endif%}
+							</td>
+							<td width="15%"><a href="#" class="oper_btn">
+							{%if order.isPay%}
+							{{'查看物流'}}
+							{%else%}
+							{{'去付款'}}
+							{%endif%}
+							</a></td>
+						</tr> 
 					</tbody>
 				</table>
+				{%endfor%}
 				
-				<ul class="order_list_th w978 clearfix">
-					<li class="col01">2016-8-21 17:36:24</li>
-					<li class="col02">订单号：56872934</li>
-					<li class="col02 stress">已支付</li>			
-				</ul>
-				<table class="order_list_table w980">
-					<tbody>
-						<tr>
-							<td width="55%">
-								<ul class="order_goods_list clearfix">					
-									<li class="col01"><img src="/static/images/goods02.jpg"></li>
-									<li class="col02">嘎啦苹果嘎啦苹果<em>11.80元/500g</em></li>	
-									<li class="col03">1</li>
-									<li class="col04">11.80元</li>	
-								</ul>
-								<ul class="order_goods_list clearfix">					
-									<li class="col01"><img src="/static/images/goods02.jpg"></li>
-									<li class="col02">嘎啦苹果嘎啦苹果<em>11.80元/500g</em></li>	
-									<li class="col03">1</li>
-									<li class="col04">11.80元</li>	
-								</ul>
-							</td>
-							<td width="15%">33.60元</td>
-							<td width="15%">已付款</td>
-							<td width="15%"><a href="#" class="oper_btn">查看物流</a></td>
-						</tr>
-					</tbody>
-				</table>
-
 				<div class="pagenation">
 					<a href="#"><上一页</a>
-					<a href="#" class="active">1</a>
-					<a href="#">2</a>
-					<a href="#">3</a>
-					<a href="#">4</a>
-					<a href="#">5</a>
+					{%for i in prange%} 
+					{%if i == pIndex%}
+					<a href="{%url 'freshEveryDay:userOrder' i %}" class="active">{{i}}</a>
+					{%else%}
+					<a href="{%url 'freshEveryDay:userOrder' i %}">{{i}}</a>
+					{%endif%}
+					{{i}}
+					{%endfor%}
 					<a href="#">下一页></a>
 				</div>
 		</div>
