@@ -28,12 +28,11 @@ class orders(models.Model):
 class order_record(models.Model):
 	goods_count = models.IntegerField()
 	goods_id = models.ForeignKey('goods_info.goods_info')
-	order_id = models.ForeignKey('Orders')
+	order_id = models.ForeignKey('orders')
 	def __unicode__(self):
 		return str(self.order_id)
 
 	class Meta:
-		managed = False
 		db_table = 'order_record'
 
 # 收货地址表

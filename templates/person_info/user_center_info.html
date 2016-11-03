@@ -17,7 +17,7 @@
 			<div class="welcome fl">欢迎来到天天生鲜!</div>
 			<div class="fr">
 				<div class="login_info fl">
-					欢迎您：<em>张 山</em>
+					欢迎您：<em id="name">{{userName}}</em>
 				</div>
 				<div class="login_btn fl">
 					<a href="login.html">登录</a>
@@ -26,18 +26,18 @@
 				</div>
 				<div class="user_link fl">
 					<span>|</span>
-					<a href="user_center_info.html">用户中心</a>
+					<a href="#">用户中心</a>
 					<span>|</span>
-					<a href="cart.html">我的购物车</a>
+					<a href="#">我的购物车</a>
 					<span>|</span>
-					<a href="user_center_order.html">我的订单</a>
-				</div>
+					<a href="{%url 'freshEveryDay:userOrder' 1 %}">我的订单</a>
+				</div> 
 			</div>
 		</div>		
 	</div>
 
 	<div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="/static/images/logo.png"></a>
+		<a href="{%url 'goods_info:index' %}" class="logo fl"><img src="/static/images/logo.png"></a>
 		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
 		<div class="search_con fr">
 			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
@@ -49,7 +49,7 @@
 		<div class="left_menu_con clearfix">
 			<h3>用户中心</h3>
 			<ul>
-				<li><a href="/user_center_info.html" class="active">· 个人信息</a></li>
+				<li><a href="#" class="active">· 个人信息</a></li>
 				<li><a href="{%url 'freshEveryDay:userOrder' 1 %}">· 全部订单</a></li>
 				<li><a href="{%url 'freshEveryDay:userSite' %}">· 收货地址</a></li>
 			</ul>

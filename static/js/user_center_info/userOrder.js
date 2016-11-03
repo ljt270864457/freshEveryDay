@@ -1,4 +1,12 @@
 $(function(){
+	var name = $('#name').html();
+	{
+		if(name)
+		{
+			$('.login_info').show();
+			$('.login_btn').hide();
+		}
+	}
 	//获取a标签的数量,除去上一页和下一页
 	var maxNum = $('.pagenation').children('a').length-2;
 	var curIndex = parseInt($('#curIndex').html());

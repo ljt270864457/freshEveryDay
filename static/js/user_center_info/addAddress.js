@@ -62,5 +62,13 @@ $(function(){
 		var pattern = new RegExp("1[0-9]{10}");
 		return pattern.test(number);
 	}
+	var userName = $('#name').html();
+	{
+		if(userName)
+		{
+			$('.login_info').show();
+			$('.login_btn').hide();
+		}
+	}
 
 })

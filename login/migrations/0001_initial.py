@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('email', models.CharField(max_length=50)),
                 ('phone_number', models.CharField(max_length=11, null=True, blank=True)),
                 ('registe_date', models.DateTimeField(auto_now=True)),
-                ('address', models.CharField(max_length=100)),
+                ('address', models.CharField(max_length=100, null=True, blank=True)),
             ],
             options={
                 'db_table': 'user_info',

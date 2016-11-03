@@ -9,12 +9,15 @@ from goods_info.models import *
 from models import *
 from pay.models import cart
 from toolKit import *
+from login import decrotors
 
 # 用户中心-个人信息视图函数
-def userInfo(request):
+@decrotors.login
+def userInfo(request,dic):
 	goodsList = []
 	goods_detail = []
-	userInfo = user_info.objects.get(name='ljt')
+	userName = dic['userName']
+	userInfo = user_info.objects.get(name=userName)
 	id = userInfo.pk
 	name = userInfo.name
 	telephone = userInfo.phone_number
@@ -31,17 +34,25 @@ def userInfo(request):
 		price = goods.price
 		unit = goods.unit
 		goods_detail.append({'name':name,'img_url':img_url,'price':price,'unit':unit})
-	return render(request,'person_info/user_center_info.html',{'user_info':json_info,'goods_detail':goods_detail})
+	return render(request,'person_info/user_center_info.html',{'user_info':json_info,'goods_detail':goods_detail,'userName':userName})
 
 # 用户中心-个人信息视图函数
 # 需要查询的数据：
 # 下单时间、订单号、支付状态、商品名称、商品价格、单位、图片url、购买数量
+# @decrotors.login
 def userOrder(request,pageIndex):
-	orderList = orders.objects.filter(user_id_id=1).order_by('-order_time')
+	# userName = dic['userName']
+	userName = request.session.get('userName',default='')
+	dic={
+		'userName':userName
+	}
+	userInfo = user_info.objects.get(name=userName)
+	userID = userInfo.pk
+	orderList = orders.objects.filter(user_id_id=userID).order_by('-order_time')
 	allInfo = []
 	tempList = []
 	# 某用户的订单号的集合
-	orderIDList = [] # [8L, 7L, 6L, 5L, 1L, 4L, 3L]
+	orderIDList = []
 	orderPriceList=[]
 	for i in orderList:
 		orderIDList.append(i.pk)
@@ -67,11 +78,8 @@ def userOrder(request,pageIndex):
 			goodsInfoList.append(goodsItem)
 			orderPrice = (orderID,sumPrice)
 		info = {'orderID':orderID,'orderTime':orderTime,'isPay':isPay,'orderGoodsInfo':goodsInfoList,'sumPrice':sumPrice}
-
 		allInfo.append(info)
 		tempList = allInfo
-
-
 		# 更新数据库中的订单总价
 		orderPriceList.append((orderPrice))
 		for i in orderPriceList:
@@ -81,7 +89,6 @@ def userOrder(request,pageIndex):
 			if table.total_price == 0:
 				table.total_price = price
 				table.save()
-
 	# 分页
 	p = Paginator(tempList,3)
 	pIndex = int(pageIndex)
@@ -90,12 +97,13 @@ def userOrder(request,pageIndex):
 	list2 = p.page(pIndex)
 	prange = p.page_range		
 	# return render(request,'person_info/user_center_order.html',{'allInfo':allInfo})
-	return render(request,'person_info/user_center_order.html',{'allInfo':list2,'prange':prange,'pIndex':pIndex})
-	# return HttpResponse(orderList)
+	return render(request,'person_info/user_center_order.html',{'allInfo':list2,'prange':prange,'pIndex':pIndex,'dic':dic})
+	# return HttpResponse(pageIndex)
 
 
 # 用户中心-收货地址视图函数
-def userSite(request):	
+@decrotors.login
+def userSite(request,dic):	
 	reli_name = request.session.get('name')
 	address = request.session.get('address')
 	number = request.session.get('phone_number')
@@ -107,7 +115,7 @@ def userSite(request):
 		reli_name = address_list[0].deli_name
 		number = formatPhoneNumber(address_list[0].phone_number)
 		json_info = {'address':address,'name':reli_name,'phone_number':number}
-	return render(request,'person_info/user_center_site.html',{'json_info':json_info})
+	return render(request,'person_info/user_center_site.html',{'json_info':json_info,'dic':dic})
 
 # 增加收货地址
 # 如果能在session中能查到数据，那么从session中获取数据，否则查数据库中的最后一条

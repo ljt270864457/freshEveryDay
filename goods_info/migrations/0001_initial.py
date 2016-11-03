@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=100)),
-                ('img_url', models.ImageField(upload_to=b'upload')),
+                ('img_url', models.ImageField(upload_to=b'upload/')),
             ],
             options={
                 'db_table': 'goods_cate',
@@ -29,11 +29,12 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100)),
                 ('price', models.DecimalField(max_digits=10, decimal_places=2)),
                 ('stock', models.IntegerField()),
-                ('img_url', models.ImageField(upload_to=b'upload')),
+                ('img_url', models.ImageField(upload_to=b'upload/')),
                 ('intro', models.TextField()),
                 ('desc', tinymce.models.HTMLField()),
                 ('unit', models.CharField(max_length=20)),
                 ('sales_num', models.IntegerField(default=0)),
+                ('putaway_date', models.DateTimeField(auto_now=True)),
                 ('cate_id', models.ForeignKey(to='goods_info.goods_cate')),
             ],
             options={

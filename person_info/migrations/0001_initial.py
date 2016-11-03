@@ -27,29 +27,28 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='order',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('order_time', models.DateTimeField(auto_now=True)),
-                ('is_pay', models.BooleanField()),
-                ('total_price', models.DecimalField(max_digits=10, decimal_places=2)),
-                ('deli_id', models.ForeignKey(to='person_info.deli_address')),
-                ('user_id', models.ForeignKey(to='login.user_info')),
-            ],
-            options={
-                'db_table': 'order',
-            },
-        ),
-        migrations.CreateModel(
             name='order_record',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('goods_count', models.IntegerField()),
                 ('goods_id', models.ForeignKey(to='goods_info.goods_info')),
-                ('order_id', models.ForeignKey(to='person_info.order')),
             ],
             options={
                 'db_table': 'order_record',
+            },
+        ),
+        migrations.CreateModel(
+            name='orders',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('order_time', models.DateTimeField(auto_now=True)),
+                ('is_pay', models.BooleanField()),
+                ('total_price', models.DecimalField(default=0, max_digits=10, decimal_places=2)),
+                ('deli_id', models.ForeignKey(to='person_info.deli_address')),
+                ('user_id', models.ForeignKey(to='login.user_info')),
+            ],
+            options={
+                'db_table': 'orders',
             },
         ),
         migrations.CreateModel(
@@ -63,5 +62,10 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'recent_views',
             },
+        ),
+        migrations.AddField(
+            model_name='order_record',
+            name='order_id',
+            field=models.ForeignKey(to='person_info.orders'),
         ),
     ]
