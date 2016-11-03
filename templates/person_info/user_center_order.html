@@ -99,16 +99,16 @@
 				{%endfor%}
 				
 				<div class="pagenation">
-					<a href="#"><上一页</a>
+					<a href="#" id="prevPage"><上一页</a>
 					{%for i in prange%} 
 					{%if i == pIndex%}
-					<a href="{%url 'freshEveryDay:userOrder' i %}" class="active">{{i}}</a>
+					<a href="{%url 'freshEveryDay:userOrder' i %}" class="active" id="curIndex">{{i}}</a>
 					{%else%}
 					<a href="{%url 'freshEveryDay:userOrder' i %}">{{i}}</a>
 					{%endif%}
 					{{i}}
 					{%endfor%}
-					<a href="#">下一页></a>
+					<a href="#" id="nextPage" >下一页></a>
 				</div>
 		</div>
 	</div>
