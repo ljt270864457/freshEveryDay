@@ -21,5 +21,5 @@ urlpatterns = [
 	url(r'^',include('person_info.urls',namespace='freshEveryDay')),
 	url(r'^',include('login.urls',namespace='login')),
 	url(r'^',include('goods_info.urls',namespace='goods_info')), 
-	# url(r'^',include('pay.urls',namespace='pay')),
+	url(r'^',include('pay.urls',namespace='pay')),
 ]

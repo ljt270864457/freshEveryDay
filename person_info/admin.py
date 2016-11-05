@@ -59,7 +59,7 @@ class goods_cate_admin(admin.ModelAdmin):
 @admin.register(goods_info)
 class goods_info_admin(admin.ModelAdmin):
 	inlines=[recent_views_inline,cart_inline]	
-	list_display=['pk','name','price','cate_id','stock','img_url','intro','desc','unit','sales_num']
+	list_display=['pk','name','price','cate_id','stock','img_url','intro','desc','unit','sales_num','putaway_date']
 
 
 

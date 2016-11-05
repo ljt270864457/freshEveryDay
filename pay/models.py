@@ -7,5 +7,9 @@ class cart(models.Model):
 	goods_id = models.ForeignKey('goods_info.goods_info')
 	buy_count = models.IntegerField()
 
+	# 获取购物车所有商品
+	def getGoods(self):
+		return self.goods_info_set.all()
+
 	class Meta():
 		db_table = 'cart'

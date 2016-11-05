@@ -7,6 +7,10 @@ class goods_cate(models.Model):
 	name = models.CharField(max_length=100)
 	img_url = models.ImageField(upload_to='upload/')
 
+	def get4goods(self):
+		return self.goods_info_set.all()[:4]
+
+
 	def __unicode__(self):
 		return self.name
 
@@ -23,7 +27,7 @@ class goods_info(models.Model):
 	intro = models.TextField()
 	desc = HTMLField()
 	unit = models.CharField(max_length=20)
-	sales_num = models.IntegerField(default=0)
+	sales_num = models.IntegerField(default=0) 
 	putaway_date = models.DateTimeField(auto_now=True)
 
 

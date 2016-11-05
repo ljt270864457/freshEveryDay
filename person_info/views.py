@@ -39,9 +39,7 @@ def userInfo(request,dic):
 # 用户中心-个人信息视图函数
 # 需要查询的数据：
 # 下单时间、订单号、支付状态、商品名称、商品价格、单位、图片url、购买数量
-# @decrotors.login
 def userOrder(request,pageIndex):
-	# userName = dic['userName']
 	userName = request.session.get('userName',default='')
 	dic={
 		'userName':userName
@@ -96,9 +94,7 @@ def userOrder(request,pageIndex):
 		pIndex = 1
 	list2 = p.page(pIndex)
 	prange = p.page_range		
-	# return render(request,'person_info/user_center_order.html',{'allInfo':allInfo})
 	return render(request,'person_info/user_center_order.html',{'allInfo':list2,'prange':prange,'pIndex':pIndex,'dic':dic})
-	# return HttpResponse(pageIndex)
 
 
 # 用户中心-收货地址视图函数
