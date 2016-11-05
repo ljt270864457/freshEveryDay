@@ -3,19 +3,23 @@ from django.shortcuts import render
 from login import decrotors
 from pay.models import *
 from goods_info.models import *
+from login.models import user_info
 from django.http import HttpResponse,JsonResponse
 import json
 
 @decrotors.login
 def myCart(request,dic):
 	goodsList = []
-	cartGoods = cart.objects.all()
+	userID = user_info.objects.get(name=dic['userName']).pk
+	cartGoods = cart.objects.filter(user_id_id=userID)
+	goodsCount = cart.objects.filter(user_id_id=userID).count()
 	for good in cartGoods:
 		goodID = good.goods_id_id
 		goodInfo = goods_info.objects.get(pk=goodID)
 		goodsList.append(goodInfo)	
 	goodsList = list(set(goodsList))
 	dic['goodsList'] = goodsList
+	dic['goodsCount'] = goodsCount
 	return render(request,'pay/cart.html',dic)
 
 def delGoodsHandeler(request):

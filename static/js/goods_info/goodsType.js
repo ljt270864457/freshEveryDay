@@ -5,4 +5,8 @@ $(function(){
 		$('#welcome').show();
 		$('#login').hide();
 	}
+	else
+	{
+		$('#welcome').hide();
+	}
 })

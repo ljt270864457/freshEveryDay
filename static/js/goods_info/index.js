@@ -1,10 +1,15 @@
 $(function(){
 	var name = $('#userName').html();
-	if(name)
+	if(name.length)
 	{
-		$('#welcome').show();
+		$('#welcome').show(); 
 		$('#login').hide();
 	}
+	else
+	{
+		$('#welcome').hide();
+	}
+
 	$('#userCenter').bind('click',function(){
 		if(!name)
 		{

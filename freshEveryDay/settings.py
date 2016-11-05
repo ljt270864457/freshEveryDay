@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'pay',
     'person_info',
     'tinymce',
+    # 'myfilter',
 )
 
 MIDDLEWARE_CLASSES = (

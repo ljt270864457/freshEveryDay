@@ -11,6 +11,8 @@ class goods_cate(models.Model):
 		return self.goods_info_set.all()[:4]
 
 
+
+
 	def __unicode__(self):
 		return self.name
 
@@ -29,6 +31,14 @@ class goods_info(models.Model):
 	unit = models.CharField(max_length=20)
 	sales_num = models.IntegerField(default=0) 
 	putaway_date = models.DateTimeField(auto_now=True)
+
+	# 获取购物车中该商品的数量
+	def getCounts(self):
+		return self.cart_set.all().count()
+
+	# 获取商品的总价
+	def getSumPrice(self):
+		return self.price * self.getCounts() 
 
 
 	def __unicode__(self):
