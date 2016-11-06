@@ -31,7 +31,7 @@ class goods_info(models.Model):
 
 	# 获取购物车中该商品的数量
 	def getCounts(self):
-		return self.cart_set.all().count()
+		return self.cart_set.all()[0].buy_count
 
 	# 获取商品的小计
 	def getSumPrice(self):
