@@ -21,6 +21,10 @@ html,body{height:100%}
 	// display:none;
 }
 
+.login_info a,.login_info span{
+	color: #666;
+}
+
 .login_info em{color:#ff8800}
 
 .login_btn a,.user_link a{

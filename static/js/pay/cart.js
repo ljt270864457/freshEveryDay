@@ -77,8 +77,7 @@ $(function() {
 			$('.cart_list_td .col01 input').each(function() {
 				$(this).prop('checked', true);
 			})
-		} 
-		else {
+		} else {
 			$('.cart_list_td .col01 input').each(function() {
 				$(this).prop('checked', false);
 
@@ -89,6 +88,7 @@ $(function() {
 		$('.total_count em').text(goodsCount);
 		$('.settlements .col03 b').text(goodsCount);
 	})
+
 	$('.cart_list_td .col01 input').bind('click', function() {
 		SumPrice = 0
 		$('.cart_list_td .col01 input').each(function() {
@@ -97,14 +97,13 @@ $(function() {
 				var patt = '^[1-9]+[0-9]*.?[0-9]*';
 				var price = parseFloat(pricestr.match(patt));
 				SumPrice += price;
-			} else {
-				goodsCount = getCheckedCount();
-				$('.total_count em').text(goodsCount);
-				$('.settlements .col03 b').text(goodsCount);
-
+				var goodsCount = getCheckedCount();
 			}
 		})
 		$('.settlements .col03 em').text(SumPrice.toFixed(2) + '元');
+		var goodsCount = getCheckedCount();
+		$('.total_count em').text(goodsCount);
+		$('.settlements .col03 b').text(goodsCount);
 
 	})
 
@@ -130,7 +129,30 @@ $(function() {
 
 		})
 		return sum;
-
 	}
+	// 结算按钮
+	// 需要传送数据：1.商品id 2.商品数量
+	$('.settlements .col04 a').bind('click',function(){
+		goodsID = []
+		$('.cart_list_td .col01 input').each(function(){
+			// 如果没有被选中，把没有被选中的商品id传给后台
+			if(!$(this).prop('checked'))
+			{
+				id = $(this).parents('.col01').siblings('.col09').text().toString();
+				goodsID.push(id);
+
+			}
+
+		})
+		alert(goodsID);
+		$.ajax({
+			url: '/filterDataHandeler/',
+			type: 'POST',
+			dataType: 'json',
+			data: {'goodsID':goodsID},
+		})
+		
+		
+	})
 
 })

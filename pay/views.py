@@ -1,5 +1,7 @@
 # coding=utf-8
-from django.shortcuts import render
+
+from django.core.urlresolvers import reverse 
+from django.shortcuts import render,redirect
 from login import decrotors
 from pay.models import *
 from goods_info.models import *
@@ -41,3 +43,15 @@ def delGoodsHandeler(request):
 @decrotors.login
 def placeOrder(request,dic):
 	return render(request,'pay/place_order.html',dic)   
+
+
+def filterDataHandeler(request):
+	if request.method =='POST':
+		AllID = request.POST['goodsID[]']
+		print(AllID)
+		if len(AllID)>0:
+			for ID in AllID:
+				goods = cart.objects.get(goods_id_id=int(ID))
+				goods.delete()
+
+	

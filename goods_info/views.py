@@ -1,5 +1,6 @@
 #coding=utf-8
-from django.shortcuts import render
+from django.core.urlresolvers import reverse   
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from login import decrotors
 from goods_info.models import *
@@ -21,15 +22,8 @@ def goodsType(request,dic):
 def detail(request,dic):
 	return render(request,'goods_info/detail.html',dic)
 
-
-
-        
-
-    
-
-
-
-
-
+def exit(request):
+    del request.session['userName']
+    return redirect(reverse('goods_info:index'))
 
 
