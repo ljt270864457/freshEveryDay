@@ -11,5 +11,6 @@ class cart(models.Model):
 	def getGoods(self):
 		return self.goods_info_set.all()
 
+
 	class Meta():
 		db_table = 'cart'

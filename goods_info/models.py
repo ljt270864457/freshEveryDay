@@ -10,9 +10,6 @@ class goods_cate(models.Model):
 	def get4goods(self):
 		return self.goods_info_set.all()[:4]
 
-
-
-
 	def __unicode__(self):
 		return self.name
 
@@ -36,7 +33,7 @@ class goods_info(models.Model):
 	def getCounts(self):
 		return self.cart_set.all().count()
 
-	# 获取商品的总价
+	# 获取商品的小计
 	def getSumPrice(self):
 		return self.price * self.getCounts() 
 

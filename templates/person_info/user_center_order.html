@@ -17,17 +17,17 @@
 					欢迎您：<em id="name">{{dic.userName}}</em>
 				</div>
 				<div class="login_btn fl">
-					<a href="login.html">登录</a>
+					<a href="{%url 'login:login'%}">登录</a>
 					<span>|</span>
-					<a href="register.html">注册</a>
+					<a href="{%url 'login:registe'%}">注册</a>
 				</div>
 				<div class="user_link fl">
 					<span>|</span>
 					<a href="{%url 'freshEveryDay:user_info' %}" >用户中心</a>
 					<span>|</span>
-					<a href="#">我的购物车</a>
+					<a href="{%url 'pay:cart'%}">我的购物车</a>
 					<span>|</span>
-					<a href="#">我的订单</a>
+					<a href="{%url 'freshEveryDay:userOrder' 1 %}">我的订单</a>
 				</div>
 			</div>
 		</div>		

@@ -10,6 +10,8 @@ import json
 @decrotors.login
 def myCart(request,dic):
 	goodsList = []
+	# 商品合计总价
+	allGoodsPrice = 0
 	userID = user_info.objects.get(name=dic['userName']).pk
 	cartGoods = cart.objects.filter(user_id_id=userID)
 	goodsCount = cart.objects.filter(user_id_id=userID).count()
@@ -18,8 +20,12 @@ def myCart(request,dic):
 		goodInfo = goods_info.objects.get(pk=goodID)
 		goodsList.append(goodInfo)	
 	goodsList = list(set(goodsList))
+	for goods in goodsList:
+		sumPrice = goods.getSumPrice()
+		allGoodsPrice+=sumPrice
 	dic['goodsList'] = goodsList
 	dic['goodsCount'] = goodsCount
+	dic['allGoodsPrice'] = allGoodsPrice
 	return render(request,'pay/cart.html',dic)
 
 def delGoodsHandeler(request):

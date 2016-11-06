@@ -17,9 +17,9 @@
 					欢迎您：<em id="userName">{{userName}}</em>
 				</div>
 				<div class="login_btn fl" id="login">
-					<a href="login.html">登录</a>
+					<a href="{%url 'login:login'%}">登录</a>
 					<span>|</span>
-					<a href="register.html">注册</a>
+					<a href="{%url 'login:registe'%}">注册</a>
 				</div>
 				<div class="user_link fl">
 					<span>|</span>
@@ -34,7 +34,7 @@
 	</div>
 
 	<div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="/static/images/logo.png"></a>
+		<a href="{%url 'goods_info:index'%}" class="logo fl"><img src="/static/images/logo.png"></a>
 		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;购物车</div>
 		<div class="search_con fr">
 			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
@@ -76,8 +76,8 @@
 	<ul class="settlements">
 		<li class="col01"><input type="checkbox"  checked=""></li>
 		<li class="col02">全选</li>
-		<li class="col03">合计(不含运费)：<span>¥</span><em>42.60</em><br>共计<b>{{goodsCount}}</b>件商品</li>
-		<li class="col04"><a href="place_order.html">去结算</a></li>
+		<li class="col03">合计(不含运费)：<span>¥</span><em>{{allGoodsPrice}}</em><br>共计<b>{{goodsCount}}</b>件商品</li>
+		<li class="col04"><a href="#">去结算</a></li>
 	</ul>
 
 	<div class="footer">

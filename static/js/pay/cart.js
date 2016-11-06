@@ -9,17 +9,17 @@ $(function() {
 
 	$('.cart_list_td #del').bind('click', function() {
 		var goodsID = $(this).parent().next('li').html();
-		// $.ajax({
-		// 		url: '/delGoodsHandeler/',
-		// 		type: 'POST',
-		// 		dataType: 'json',
-		// 		data: {
-		// 			'goodsID': goodsID
-		// 		},
-		// 	})
-		// 	.done(function() {
-		// 		alert('删除成功')
-		// 	})
+		$.ajax({
+				url: '/delGoodsHandeler/',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					'goodsID': goodsID
+				},
+			})
+			.done(function() {
+				alert('删除成功')
+			})
 		var count = parseInt($('.total_count em').text());
 		count -= 1;
 		$('.total_count em').text(count);
@@ -77,12 +77,35 @@ $(function() {
 			$('.cart_list_td .col01 input').each(function() {
 				$(this).prop('checked', true);
 			})
-		} else {
+		} 
+		else {
 			$('.cart_list_td .col01 input').each(function() {
 				$(this).prop('checked', false);
+
 			})
 		}
+		goodsCount = getCheckedCount();
 		$('.settlements .col03 em').text(getFinalPrice());
+		$('.total_count em').text(goodsCount);
+		$('.settlements .col03 b').text(goodsCount);
+	})
+	$('.cart_list_td .col01 input').bind('click', function() {
+		SumPrice = 0
+		$('.cart_list_td .col01 input').each(function() {
+			if ($(this).prop('checked')) {
+				var pricestr = $(this).parent().siblings('.col07').text();
+				var patt = '^[1-9]+[0-9]*.?[0-9]*';
+				var price = parseFloat(pricestr.match(patt));
+				SumPrice += price;
+			} else {
+				goodsCount = getCheckedCount();
+				$('.total_count em').text(goodsCount);
+				$('.settlements .col03 b').text(goodsCount);
+
+			}
+		})
+		$('.settlements .col03 em').text(SumPrice.toFixed(2) + '元');
+
 	})
 
 	function getFinalPrice() {
@@ -96,6 +119,18 @@ $(function() {
 			}
 		}
 		return sumPrice.toFixed(2);
+	}
+
+	function getCheckedCount() {
+		sum = 0;
+		$('.cart_list_td .col01 input').each(function() {
+			if ($(this).prop('checked')) {
+				sum += 1;
+			}
+
+		})
+		return sum;
+
 	}
 
 })
