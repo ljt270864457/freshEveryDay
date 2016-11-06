@@ -132,18 +132,25 @@ def addressAddHandler(request):
 	return redirect(reverse('freshEveryDay:userSite'))
 
 # 购物车增加商品
-def addGoodsHanderler(request):
+@decrotors.login
+def addGoodsHanderler(request,dic):
 	if request.method == 'POST':
+		# 传过来的name是购物车中的商品名称
 		name = request.POST['name']
-	goods = goods_info.objects.get(name=name)
-	goods_id = goods.pk
-	user = user_info.objects.get(name = 'ljt')
-	user_id = user.pk	
-	count = 1
-	json_info = {'userid':user_id,'goodsid':goods_id,'Buy_count':count}
-	cart_info = cart(buy_count=count,goods_id_id=goods_id,user_id_id=user_id)
-	cart_info.save()
-	return JsonResponse(json_info)
+		# 获取当前用户ID
+		userName = dic['userName']
+		user_id = user_info.objects.get(name=userName).pk
+		# 获取名称为name的商品信息
+		goodsInfo = goods_info.objects.get(name=name)			
+		goodsID = goodsInfo.pk
+		# 获取购物车中是否有id为goodsID的商品
+		cartGoods = cart.objects.filter(goods_id_id=goodsID)
+		if len(cartGoods)>0:
+			cartGoods[0].buy_count += 1
+			cartGoods[0].save()
+		else:
+			cart_goods = cart(buy_count=1,goods_id_id=goodsID,user_id_id=user_id)
+			cart_goods.save()
 
 
 
