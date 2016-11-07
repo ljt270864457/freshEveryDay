@@ -46,14 +46,21 @@ def placeOrder(request,dic):
 
 
 def filterDataHandeler(request):
-	if request.method =='POST':
-		AllID = request.POST['goodsID[]']
-		if len(AllID)>0:
-			for ID in AllID:
-				goods = cart.objects.get(goods_id_id=int(ID))
-				goods.delete()
-		AllCount = request.POST
-		print(AllCount)
-		return HttpResponse('123')
+	dataNum = len(request.POST)/3
+	for i in range(dataNum):
+		ID = request.POST['goods['+ str(i) +'][id]']
+		isChecked = request.POST['goods['+ str(i) +'][isChecked]']
+		# 数据被选中，更新数量
+		if int(isChecked) == 1:
+			cartInfo = cart.objects.get(goods_id_id=int(ID))
+			count = request.POST['goods['+ str(i) +'][count]']
+			dataInfo = cart.objects.get(goods_id_id=int(ID))
+			dataInfo.buy_count = count
+			dataInfo.save()
+		else:
+			cartInfo = cart.objects.get(goods_id_id=int(ID))
+			cartInfo.delete()
+	
+	return HttpResponse('123')
 
 	

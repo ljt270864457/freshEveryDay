@@ -43,10 +43,7 @@ $(function(){
 			type: 'POST',
 			dataType: 'json',
 			data: {'goodsID': goodsID},
-		})
-		.done(function(data){
-			print(data['isUpdated'])
-		})		
+		})	
 	})
 	$('.goods_con .goods_list h4 a').bind('click',function(){
 		var goodsID = $(this).parent().siblings('#goodsID').text()
@@ -55,9 +52,6 @@ $(function(){
 			type: 'POST',
 			dataType: 'json',
 			data: {'goodsID': goodsID},
-		})
-		.done(function(data){
-			print(data['isUpdated'])
-		})		
+		})	
 	})
 })
