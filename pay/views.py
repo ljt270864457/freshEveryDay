@@ -48,10 +48,12 @@ def placeOrder(request,dic):
 def filterDataHandeler(request):
 	if request.method =='POST':
 		AllID = request.POST['goodsID[]']
-		print(AllID)
 		if len(AllID)>0:
 			for ID in AllID:
 				goods = cart.objects.get(goods_id_id=int(ID))
 				goods.delete()
+		AllCount = request.POST
+		print(AllCount)
+		return HttpResponse('123')
 
 	

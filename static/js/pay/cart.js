@@ -1,4 +1,4 @@
-$(function() {
+$(function() { 
 	var name = $('#userName').html();
 	if (name) {
 		$('#welcome').show();
@@ -132,8 +132,13 @@ $(function() {
 	}
 	// 结算按钮
 	// 需要传送数据：1.商品id 2.商品数量
+	function dataObj(id,count){
+		this.id=id;
+		this.count = count;
+	}
 	$('.settlements .col04 a').bind('click',function(){
-		goodsID = []
+		goodsID = [];
+		goodsCount = [];
 		$('.cart_list_td .col01 input').each(function(){
 			// 如果没有被选中，把没有被选中的商品id传给后台
 			if(!$(this).prop('checked'))
@@ -142,9 +147,15 @@ $(function() {
 				goodsID.push(id);
 
 			}
+			else
+			{
+				id = $(this).parents('.col01').siblings('.col09').text().toString();
+				count = $(this).parents('.col01').siblings('.col06').children('.num_add').children('input').val();
+				data = new dataObj(id,count);
+				goodsCount.push(data);
 
+			}
 		})
-		alert(goodsID);
 		$.ajax({
 			url: '/filterDataHandeler/',
 			type: 'POST',
