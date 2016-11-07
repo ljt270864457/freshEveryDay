@@ -103,11 +103,12 @@
 		<div class="goods_con clearfix">
 			<div class="goods_banner fl"><img src="/static/images/banner0{{cate.pk}}.jpg"></div>
 			<ul class="goods_list fl">
-					{%for good in cate.get4goods%}
+					{%for goods in cate.get4goods%}
 				<li>								
-					<h4><a href="{%url 'goods_info:detail'%}">{{good.name}}</a></h4>
-					<a href="{%url 'goods_info:detail'%}"><img src="/static/{{good.img_url}}"></a>
-					<div class="prize">¥ {{good.price}}</div>					
+					<h4><a href="{%url 'goods_info:detail'%}">{{goods.name}}</a></h4>
+					<a href="{%url 'goods_info:detail'%}"><img src="/static/{{goods.img_url}}"></a>
+					<div class="prize">¥ {{goods.price}}</div>
+					<span ID="goodsID" style="">{{goods.pk}}</span>					
 				</li>
 				{%endfor%}
 			</ul>

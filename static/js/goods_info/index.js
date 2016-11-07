@@ -35,4 +35,29 @@ $(function(){
 			$(this).attr('href','/login/');
 		}		
 	})
+
+	$('.goods_con .goods_list li a').bind('click',function(){
+		var goodsID = $(this).siblings('#goodsID').text()
+		$.ajax({
+			url: '/saveGoodsID/',
+			type: 'POST',
+			dataType: 'json',
+			data: {'goodsID': goodsID},
+		})
+		.done(function(data){
+			print(data['isUpdated'])
+		})		
+	})
+	$('.goods_con .goods_list h4 a').bind('click',function(){
+		var goodsID = $(this).parent().siblings('#goodsID').text()
+		$.ajax({
+			url: '/saveGoodsID/',
+			type: 'POST',
+			dataType: 'json',
+			data: {'goodsID': goodsID},
+		})
+		.done(function(data){
+			print(data['isUpdated'])
+		})		
+	})
 })
